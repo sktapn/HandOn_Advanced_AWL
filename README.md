@@ -1,7 +1,7 @@
 <div align="center">
     <img src="https://github.com/user-attachments/assets/d58b6c82-e74b-40e3-99a5-e115656a481a" width="250" height="250" alt="Sua Logo">
     <br>
-    <em>BabySafe app é um aplicativo focado para clinicas, maternidads e pais de recem nascidos.</em>
+    <em>"O aplicativo BabySafe é uma solução voltada para clínicas, maternidades e pais de recém-nascidos, oferecendo recursos especializados para atender às necessidades desse público."</em>
     <br>
     <br>
     <img src="https://img.shields.io/badge/Framework-Flutter-blue?style=flat&logo=flutter&logoColor=white" alt="Framework">
@@ -11,20 +11,12 @@
 </div>
 
 ---
-## Documentation
+## Documentaação
 
-Get started with Flutter, learn the fundamentals, and explore advanced topics on the official documentation websites.
+Consulte os recursos essenciais e materiais de apoio para cada parte do projeto, desde o desenvolvimento do aplicativo até os protótipos e a integração com o hardware.
 
-- [Flutter: Getting Started](https://flutter.dev/docs/get-started)
-- [Flutter: Widgets Basics](https://flutter.dev/docs/development/ui/widgets-intro)
-- [Dart: Language Tour](https://dart.dev/guides/language/language-tour)
-- [Supabase: Quickstart](https://supabase.com/docs/guides/getting-started)
-- [Firebase: Add to Flutter](https://firebase.google.com/docs/flutter/setup)
-
-### Advanced
-
-- [Flutter: State Management](https://flutter.dev/docs/development/data-and-backend/state-mgmt)
-- [Flutter: Animations](https://flutter.dev/docs/development/ui/animations)
-- [Dart: Asynchronous Programming](https://dart.dev/guides/language/concurrency)
-- [Supabase: Realtime Subscriptions](https://supabase.com/docs/guides/realtime)
-- [Firebase: Cloud Functions](https://firebase.google.com/docs/functions)
+- [Aplicativo](https://github.com/sktapn/HandOn_Advanced_AWL/tree/main/Aplicativo)
+- [Desenvolvimento](https://github.com/sktapn/HandOn_Advanced_AWL/tree/main/Desenvolvimento)
+- [Documentação](https://github.com/sktapn/HandOn_Advanced_AWL/tree/main/Documenta%C3%A7%C3%A3o)
+- [Hardware](https://github.com/sktapn/HandOn_Advanced_AWL/tree/main/Hardware)
+- [Protótipos](https://github.com/sktapn/HandOn_Advanced_AWL/tree/main/Prot%C3%B3tipos)
