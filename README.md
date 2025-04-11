@@ -11,7 +11,7 @@
 </div>
 
 ---
-## Documentaação
+## Documentaação 
 
 Consulte os recursos essenciais e materiais de apoio para cada parte do projeto, desde o desenvolvimento do aplicativo até os protótipos e a integração com o hardware.
 
