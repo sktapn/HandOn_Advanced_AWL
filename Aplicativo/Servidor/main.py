@@ -6,7 +6,7 @@ import time
 app = Flask(__name__)
 
 # URL do fluxo RTSP
-stream_url = "rtsp://admin:N3T1PD56@192.168.1.11:554/cam/realmonitor?channel=1&subtype=0&unicast=true&proto=Onvif"
+rtsp_url = os.environ.get("RTSP_URL")
 
 # Variável global para contagem de rostos (usada pelo serviço Flutter)
 face_count = 0
