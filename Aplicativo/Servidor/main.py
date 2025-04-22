@@ -2,6 +2,7 @@ import cv2
 from flask import Flask, Response, render_template, jsonify
 from face import detect_faces
 import time
+import os
 
 app = Flask(__name__)
 
