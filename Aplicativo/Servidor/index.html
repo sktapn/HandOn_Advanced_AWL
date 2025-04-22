@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BabySafe - Monitoramento Neonatal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0277BD;
+            --primary-light: #B3E5FC;
+            --secondary: #4CAF50;
+            --secondary-light: #C8E6C9;
+            --background: #F5F7FA;
+            --surface: #FFFFFF;
+            --error: #F44336;
+            --warning: #FFC107;
+            --success: #4CAF50;
+            --text: #263238;
+            --text-secondary: #546E7A;
+            --border: #E0E0E0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--surface);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background-color: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo-text span {
+            color: var(--secondary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .user-details {
+            text-align: right;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Patient Info */
+        .patient-info {
+            background-color: var(--surface);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .patient-details {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .patient-id {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .patient-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .patient-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .patient-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .patient-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Video Feed */
+        .video-card {
+            background-color: var(--surface);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .card-header {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-title i {
+            color: var(--primary);
+        }
+
+        .card-content {
+            padding: 1rem;
+        }
+
+        .video-container {
+            position: relative;
+            aspect-ratio: 16/9;
+            background-color: #000;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .video-feed {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            gap: 1rem;
+        }
+
+        .video-placeholder i {
+            font-size: 3rem;
+            color: var(--primary-light);
+        }
+
+        .video-placeholder-text {
+            text-align: center;
+            max-width: 80%;
+        }
+
+        .video-placeholder-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .video-placeholder-message {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .video-overlay {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        .video-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .video-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .video-status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .video-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Vital Signs */
+        .vitals-card {
+            background-color: var(--surface);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .vitals-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .vital-item {
+            padding: 1rem;
+            border-right: 1px solid var(--border);
+        }
+
+        .vital-item:last-child {
+            border-right: none;
+        }
+
+        .vital-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .vital-title {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .vital-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .heart-rate-icon {
+            background-color: rgba(244, 67, 54, 0.1);
+            color: var(--error);
+        }
+
+        .temperature-icon {
+            background-color: rgba(2, 119, 189, 0.1);
+            color: var(--primary);
+        }
+
+        .oxygen-icon {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: var(--secondary);
+        }
+
+        .vital-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .vital-unit {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-left: 2px;
+        }
+
+        .vital-trend {
+            margin-top: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+        }
+
+        .trend-up {
+            color: var(--error);
+        }
+
+        .trend-down {
+            color: var(--success);
+        }
+
+        .trend-stable {
+            color: var(--text-secondary);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Alerts */
+        .alerts-card {
+            background-color: var(--surface);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .alerts-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .alert-item {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+        }
+
+        .alert-item:last-child {
+            border-bottom: none;
+        }
+
+        .alert-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .alert-warning .alert-icon {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--warning);
+        }
+
+        .alert-danger .alert-icon {
+            background-color: rgba(244, 67, 54, 0.1);
+            color: var(--error);
+        }
+
+        .alert-info .alert-icon {
+            background-color: rgba(33, 150, 243, 0.1);
+            color: var(--primary);
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-weight: 500;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .alert-message {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .alert-time {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        /* Notes */
+        .notes-card {
+            background-color: var(--surface);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .notes-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .note-item {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .note-item:last-child {
+            border-bottom: none;
+        }
+
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+
+        .note-author {
+            font-weight: 500;
+            font-size: 0.75rem;
+        }
+
+        .note-time {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .note-content {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #01579B;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #388E3C;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--background);
+        }
+
+        .btn-danger {
+            background-color: var(--error);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #D32F2F;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 6px rgba(76, 175, 80, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .patient-meta {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .vitals-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .vital-item {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .vital-item:last-child {
+                border-bottom: none;
+            }
+
+            .patient-details {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-baby"></i>
+                    </div>
+                    <div class="logo-text">Baby<span>Safe</span></div>
+                </div>
+
+                <div class="user-info">
+                    <div class="user-details">
+                        <div class="user-name">Dra. Silva</div>
+                        <div class="user-role">Neonatologista</div>
+                    </div>
+                    <div class="user-avatar">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="patient-info">
+            <div class="patient-details">
+                <div class="patient-id">NB2103</div>
+                <div>
+                    <div class="patient-name">Bebê Silva</div>
+                    <div class="patient-meta">
+                        <div class="patient-meta-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>2 dias</span>
+                        </div>
+                        <div class="patient-meta-item">
+                            <i class="fas fa-weight"></i>
+                            <span>3.2 kg</span>
+                        </div>
+                        <div class="patient-meta-item">
+                            <i class="fas fa-ruler-vertical"></i>
+                            <span>49 cm</span>
+                        </div>
+                        <div class="patient-meta-item">
+                            <i class="fas fa-venus"></i>
+                            <span>Feminino</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="patient-actions">
+                <button class="btn btn-outline">
+                    <i class="fas fa-file-medical"></i>
+                    Prontuário
+                </button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="primary-content">
+                <div class="video-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-video"></i>
+                            Monitoramento em Tempo Real
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <div class="video-container">
+                            <div class="video-placeholder">
+                                <i class="fas fa-video-slash"></i>
+                                <div class="video-placeholder-text">
+                                    <div class="video-placeholder-title">Câmera não disponível</div>
+                                    <div class="video-placeholder-message">
+                                        Verificando conexão com a câmera do berçário...
+                                    </div>
+                                </div>
+                            </div>
+                            <img src="{{ url_for('video_feed') }}" alt="Monitoramento do Recém-nascido" class="video-feed">
+                            <div class="video-overlay">
+                                <div class="status-dot"></div>
+                                <span>Transmissão ao vivo - Berçário 2</span>
+                            </div>
+                        </div>
+
+                        <div class="video-controls">
+                            <div class="video-status">
+                                <div class="video-status-item">
+                                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                                    <span>Detecção facial ativa</span>
+                                </div>
+                            </div>
+
+                            <div class="video-actions">
+                                <button class="btn btn-outline">
+                                    <i class="fas fa-camera"></i>
+                                    Capturar
+                                </button>
+                                <button class="btn btn-danger">
+                                    <i class="fas fa-record-vinyl"></i>
+                                    Gravar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vitals-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-heartbeat"></i>
+                            Sinais Vitais
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <div class="vitals-grid">
+                            <div class="vital-item">
+                                <div class="vital-header">
+                                    <div class="vital-title">Frequência Cardíaca</div>
+                                    <div class="vital-icon heart-rate-icon">
+                                        <i class="fas fa-heartbeat"></i>
+                                    </div>
+                                </div>
+                                <div class="vital-value">142<span class="vital-unit">bpm</span></div>
+                                <div class="vital-trend trend-up">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+3 desde última medição</span>
+                                </div>
+                            </div>
+
+                            <div class="vital-item">
+                                <div class="vital-header">
+                                    <div class="vital-title">Temperatura</div>
+                                    <div class="vital-icon temperature-icon">
+                                        <i class="fas fa-thermometer-half"></i>
+                                    </div>
+                                </div>
+                                <div class="vital-value">36.8<span class="vital-unit">°C</span></div>
+                                <div class="vital-trend trend-stable">
+                                    <i class="fas fa-equals"></i>
+                                    <span>Estável nas últimas 2h</span>
+                                </div>
+                            </div>
+
+                            <div class="vital-item">
+                                <div class="vital-header">
+                                    <div class="vital-title">Saturação de Oxigênio</div>
+                                    <div class="vital-icon oxygen-icon">
+                                        <i class="fas fa-lungs"></i>
+                                    </div>
+                                </div>
+                                <div class="vital-value">98<span class="vital-unit">%</span></div>
+                                <div class="vital-trend trend-down">
+                                    <i class="fas fa-arrow-down"></i>
+                                    <span>-1% desde última medição</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="alerts-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Alertas Recentes
+                        </div>
+                    </div>
+
+                    <div class="alerts-list">
+                        <div class="alert-item alert-danger">
+                            <div class="alert-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="alert-content">
+                                <div class="alert-title">Frequência Cardíaca Elevada</div>
+                                <div class="alert-message">Frequência cardíaca acima do limite normal (145 bpm).</div>
+                            </div>
+                            <div class="alert-time">10:23</div>
+                        </div>
+
+                        <div class="alert-item alert-warning">
+                            <div class="alert-icon">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <div class="alert-content">
+                                <div class="alert-title">Movimento Detectado</div>
+                                <div class="alert-message">Movimento incomum detectado durante o sono.</div>
+                            </div>
+                            <div class="alert-time">09:45</div>
+                        </div>
+
+                        <div class="alert-item alert-info">
+                            <div class="alert-icon">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div class="alert-content">
+                                <div class="alert-title">Verificação de Rotina</div>
+                                <div class="alert-message">Verificação de sinais vitais realizada pela Enf. Oliveira.</div>
+                            </div>
+                            <div class="alert-time">09:15</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notes-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-clipboard-list"></i>
+                            Anotações Médicas
+                        </div>
+                    </div>
+
+                    <div class="notes-list">
+                        <div class="note-item">
+                            <div class="note-header">
+                                <div class="note-author">Dra. Silva</div>
+                                <div class="note-time">Hoje, 14:30</div>
+                            </div>
+                            <div class="note-content">
+                                Paciente apresenta sinais vitais estáveis. Alimentação normal. Resposta a estímulos adequada para a idade.
+                            </div>
+                        </div>
+
+                        <div class="note-item">
+                            <div class="note-header">
+                                <div class="note-author">Enf. Oliveira</div>
+                                <div class="note-time">Hoje, 12:15</div>
+                            </div>
+                            <div class="note-content">
+                                Troca de fraldas realizada. Pele íntegra, sem sinais de irritação. Alimentação às 12:00, aceitou 40ml.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alerts-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-calendar-check"></i>
+                            Próximos Procedimentos
+                        </div>
+                    </div>
+
+                    <div class="alerts-list">
+                        <div class="alert-item">
+                            <div class="alert-icon" style="background-color: rgba(2, 119, 189, 0.1); color: var(--primary);">
+                                <i class="fas fa-stethoscope"></i>
+                            </div>
+                            <div class="alert-content">
+                                <div class="alert-title">Avaliação Pediátrica</div>
+                                <div class="alert-message">Dr. Mendes - Pediatra</div>
+                            </div>
+                            <div class="alert-time">16:30</div>
+                        </div>
+
+                        <div class="alert-item">
+                            <div class="alert-icon" style="background-color: rgba(76, 175, 80, 0.1); color: var(--secondary);">
+                                <i class="fas fa-syringe"></i>
+                            </div>
+                            <div class="alert-content">
+                                <div class="alert-title">Vacinação</div>
+                                <div class="alert-message">Enf. Carla - Sala de Imunização</div>
+                            </div>
+                            <div class="alert-time">Amanhã</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const videoFeed = document.querySelector('.video-feed');
+            const videoPlaceholder = document.querySelector('.video-placeholder');
+            if (videoFeed && videoPlaceholder) {
+                videoFeed.addEventListener('error', function() {
+                    videoPlaceholder.style.display = 'flex';
+                    videoFeed.style.display = 'none';
+                });
+                videoFeed.addEventListener('load', function() {
+                    videoPlaceholder.style.display = 'none';
+                    videoFeed.style.display = 'block';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
